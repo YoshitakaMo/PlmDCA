@@ -18,7 +18,7 @@ function mutualinfo(filename::AbstractString;
         mi = mut_inf(Pij_true,Pi_true,q)
     else
         error("pseudocount = $pseudocount should be in [0,1]")
-    end    
+    end
     if output == :matrix
         return mi
     elseif output == :score
@@ -33,7 +33,7 @@ function mutualinfo(filename::AbstractString;
         sort!(score,by=x->x[3],rev=true)
         return score
     elseif output == :apcscore
-        mi=GaussDCA.correct_APC(mi) 
+        mi=GaussDCA.correct_APC(mi)
         score = GaussDCA.compute_ranking(mi,min_separation)
         return score
     else
@@ -55,12 +55,12 @@ function mut_inf(Pij::Matrix{Float64},Pi::Vector{Float64},Q::Int)
     N3 = length((Pi))
     N3 == N2 || error("vector dim=$N3 size(matrix) = ($N1,$N1)")
 
-    rem(N3,q) == 0 || error("dimension dim=$N3 should be multiple of $q")    
+    rem(N3,q) == 0 || error("dimension dim=$N3 should be multiple of $q")
     N = div(N1,q)
-    
+
     scoreM = zeros(Float64,N,N)
     piq = zeros(Float64, N)    # vector of values for Pi[Q]
-    pijq = zeros(Float64, N,q) # vector of values for Pij[i,j,Q,a] a in 1,...,q 
+    pijq = zeros(Float64, N,q) # vector of values for Pij[i,j,Q,a] a in 1,...,q
 
     vec_row = zeros(Float64,q)
     vec_col = zeros(Float64,q)
@@ -89,30 +89,30 @@ function mut_inf(Pij::Matrix{Float64},Pi::Vector{Float64},Q::Int)
                 for a=1:q
                     pij = Pij[row0 + a, col0 + b]
                     pi  = Pi[row0 + a]
-                    pj  = Pi[col0 + b] 
+                    pj  = Pi[col0 + b]
                     if pij > 0
-                        mi += pij * log(pij / (pi*pj))                     
+                        mi += pij * log(pij / (pi*pj))
 
                     end
                 end
-            end            
+            end
             for a=1:q
                 pij = vec_row[a]
                 pi  = piq[i]
                 pj  = Pi[col0 + a]
                 pipj = pi * pj
-                if pij > 0 && pipj >0 
+                if pij > 0 && pipj >0
                     mi += pij * log(pij / (pi*pj)) # contribution bottom frame
                 end
                 pij = vec_col[a]
                 pi  = Pi[row0 + a]
                 pj  = piq[j]
                 pipj = pj * pj
-                if pij > 0 && pipj > 0  
+                if pij > 0 && pipj > 0
                     mi += pij * log(pij / (pi*pj)) # contribution rigth frame
-                end                
-            end                        
-            
+                end
+            end
+
             _srow = sum(vec_row)  # contribution from Pij[q,q]
             _scol = sum(vec_col)
             pqqrow = piq[i] - _srow
@@ -120,7 +120,7 @@ function mut_inf(Pij::Matrix{Float64},Pi::Vector{Float64},Q::Int)
             pipj = piq[i]*piq[j]
             if pqqrow > 0 && pipj > 0
                 mi += pqqrow * log(pqqrow/pipj)
-            end                       
+            end
             scoreM[i,j] = mi
             scoreM[j,i] = mi
         end
@@ -159,7 +159,7 @@ function compute_frame_col!(vec_col::Vector{Float64},i::Int, j::Int, Pij::Matrix
             s += Pij[a,b]
         end
         ctr += 1
-        vec_col[ctr] = Pi[(i-1)*q + ctr] - s        
+        vec_col[ctr] = Pi[(i-1)*q + ctr] - s
         if 0.0 >= vec_col[ctr] >= 1.0
             println("element $ctr = ", vec_col[ctr])
             error("");

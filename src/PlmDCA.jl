@@ -1,5 +1,10 @@
 module PlmDCA
 using GaussDCA
+using Distributed
+using Printf
+using LinearAlgebra
+using SharedArrays
+using Statistics: mean
 
 using NLopt
 

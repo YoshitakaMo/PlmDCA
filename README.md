@@ -1,3 +1,6 @@
+This is a modified version of PlmDCA compatible with Julia 1.3.0.
+The original version is https://github.com/pagnani/PlmDCA.
+
 PlmDCA
 ======
 
@@ -37,7 +40,7 @@ Install
 
 It requires the installation of:
 
-* [NLopt.jl](https://github.com/JuliaOpt/NLopt.jl). 
+* [NLopt.jl](https://github.com/JuliaOpt/NLopt.jl).
 ```
 julia> Pkg.add("NLopt")
 ```
@@ -55,7 +58,7 @@ To install the package under version >= 0.7 please use the new package manager (
 ```
 (v0.7) pkg> add https://github.com/pagnani/PlmDCA #v07
 ```
-   
+
 We have not tested yet the software on Windows.
 
 Usage
@@ -72,12 +75,12 @@ that the asymmetric version is faster and more accurate. This function
 take as input the name of a (possibly zipped) multiple sequence.
 
 We also provide another function `mutualinfo(filename::String,...)` to
-compute the mutual information score. 
+compute the mutual information score.
 
 There are a number of possible algorithmic strategies for the
 optimization problem. As long as local gradient-based optimization is
 concerned, this is a list of `:symbols` (associated to the different
-methods): 
+methods):
 ```
 :LD_MMA, :LD_SLSQP, :LD_LBFGS, :LD_TNEWTON_PRECOND
 :LD_TNEWTON_PRECOND_RESTART, :LD_TNEWTON, :LD_VAR2, :LD_VAR1
@@ -109,7 +112,7 @@ Requirements
 
 The minimal julia version for using this code is 0.6.
 
-Todos 
------ 
+Todos
+-----
 
 A lot!
